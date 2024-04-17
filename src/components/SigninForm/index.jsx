@@ -15,8 +15,9 @@ export default function SigninForm(){
     
 
     function handleClick(event){
+        const body = {email: userMail, password:userPassword}
         event.preventDefault()
-        dispatch(loginUser(userMail, userPassword))
+        dispatch(loginUser(JSON.stringify(body)))
         console.log(userMail)
         console.log(userPassword)  
     }

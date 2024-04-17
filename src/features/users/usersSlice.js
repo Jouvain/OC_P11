@@ -5,13 +5,13 @@ const initialState = {
     error: null,
 }
 
-export const loginUser = createAsyncThunk("user/loginUser", async (usermail, userpassword, getState) => {
-    const body = {email: usermail, password:userpassword}
-    const bodyString = JSON.stringify(body)
+export const loginUser = createAsyncThunk("user/loginUser", async (body, getState) => {
+    
+    //const bodyString = JSON.stringify(body)
     const response = await fetch("http://localhost:3001/api/v1/user/login", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: bodyString
+        body: body
     })
     console.log(response)
     const data = await response.json()
