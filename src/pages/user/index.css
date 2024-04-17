@@ -1,0 +1,19 @@
+.user__main {
+    background-color: var(--bg-color);
+    padding: 2rem 0 6rem 0;
+}
+.user__header {
+    color: white;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    text-align: center;
+}
+.user__title{
+    font-size: 2rem;
+}
+.button--user__header{
+    width: 100px;
+}

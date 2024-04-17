@@ -1,0 +1,1 @@
+"# OC_P11"  initgit add README.mdgit commit -m "first commit"git branch -M maingit remote add origin https://github.com/Jouvain/OC_P11.gitgit push -u origin main

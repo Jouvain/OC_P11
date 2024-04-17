@@ -1,0 +1,20 @@
+[
+    {
+        "id":1,
+        "icon":{"img":"/src/assets/img/icon-chat.png", "alt": "bulles de dialogue"},
+        "title": "You are our #1 priority",
+        "text":"Need to talk to a representative ? You can get in touch through our 24/7 chet or a phone call in less than 5 minutes."
+    },
+    {
+        "id":2,
+        "icon":{"img":"/src/assets/img/icon-money.png", "alt": "billets de banque"},
+        "title": "More savings means higher rates",
+        "text":"The more you save with us, the higher your interest rate will be !"
+    },
+    {
+        "id":3,
+        "icon":{"img":"/src/assets/img/icon-security.png", "alt": "bouclier"},
+        "title": "Security you can trust",
+        "text":"We use top of the line encryption to make sure your date and money is always safe."
+    }
+]

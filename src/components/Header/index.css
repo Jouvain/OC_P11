@@ -1,0 +1,26 @@
+.main-nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 20px;
+}
+.main-nav__logo{
+    width: 200px;
+}
+.main-nav__item{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: var(--main-color);
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+.main-nav__item:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+.main-nav__item img {
+    height: 16px;
+    width: 16px;
+    margin-right: 0.5rem;
+}
