@@ -13,13 +13,18 @@ export default function Header() {
 
     function handleClick(){
         dispatch(signOut())
-        console.log("signOut dispatché")
     }
 
     const signOutButton = (
         <Link to="/" className="main-nav__item"  onClick={handleClick}>
             <img src={arrow} alt="une flèche sortant d'un cube"></img>
             <p> Sign Out </p> 
+        </Link>)
+
+    const signInButton = (
+        <Link to="/signin" className="main-nav__item">
+            <img src={figure} alt="icone de silhouette dans un cercle"></img>
+            <p> Sign In </p> 
         </Link>)
     
 
@@ -29,11 +34,10 @@ export default function Header() {
                 <img src="./src/assets/img/argentBankLogo.png" alt="Logo vert et marron d'ArgentBank" className="main-nav__logo"></img>
             </Link>
                 
-            <Link to="/signin" className="main-nav__item">
-                <img src={figure} alt="icone de silhouette dans un cercle"></img>
-                <p>Sign In</p>
-            </Link>
-            {token && signOutButton}
+           {token ? (signOutButton) : (signInButton)  }
+
+
+            
         </nav>
     )
 }
