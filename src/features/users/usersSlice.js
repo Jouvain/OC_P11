@@ -3,7 +3,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 const initialState = {
     token: null,
     error: null,
-    user: null,
+    status: "idle",
+    user: {firstName:"", lastName:"", userName:"", id:""},
 }
 
 export const loginUser = createAsyncThunk("user/loginUser", async (body, {rejectWithValue}) => {
@@ -44,6 +45,9 @@ const usersSlice = createSlice({
             const existingToken = state.token
             if (existingToken) {
                 state.token = null
+                state.status = "idle"
+                state.user = {firstName:"", lastName:"", userName:"", id:""}
+                state.error = null
             }
         }
     },
@@ -58,11 +62,16 @@ const usersSlice = createSlice({
                 
                 
             })
+            .addCase(fetchUser.pending, (state,action) => {
+                state.status = "ongoing"
+            })
             .addCase(fetchUser.fulfilled, (state, action) => {
                 state.user = action.payload
+                state.status = "success"
             })
             .addCase(fetchUser.rejected, (state, action) => {
                 state.error = action.payload
+                state.status = "failure"
             })
     }
 })

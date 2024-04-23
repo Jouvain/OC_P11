@@ -7,39 +7,51 @@ import { useSelector, useDispatch } from "react-redux"
 import "./index.css"
 import { useEffect } from "react"
 
-export default function UserPage({username}) {
+export default function UserPage() {
     
     const dispatch = useDispatch()
     const authentified = useSelector(tokenUser)
-    const token = useSelector(tokenUser)
-    const pseudo = useSelector((state) => state.user.userName)
- 
-    async function fetchingUser() {
-        try {
-            await dispatch(fetchUser(token)).unwrap()
-       } catch (error) {
-            console.error("fetchUser bugged !", error)
-       }
-    }
+    
+    const pseudo = useSelector((state) => state.user.user)
+    const status = useSelector((state) => state.user.status)
 
     useEffect(() => {
-        fetchingUser()
-    }),[dispatch]
+        if (status === "idle") {
+            dispatch(fetchUser(authentified))
+        }
+    }),[dispatch, status]
+
+    let content
+    
 
     if (!authentified) {
         return <Navigate to="/signin" />
     }
     else {
+        if (status === "ongoing") {
+            content = <h1> LOADING... </h1>
+        }
+        else if (status === "success") {
+            let personna = pseudo.firstName + " " + `"${pseudo.userName}"` + " " + pseudo.lastName
+            content = (
+                <>
+                    <div className="user__header">
+                        <h1 className="user__title"> {personna} </h1>
+                        <div>
+                        <Button  style="button--user__header" label={"Edit Name"} />
+                        </div>
+                    </div>
+                    <Dashline />
+                </>
+            )
+        }
+        else if (status === "failure") {
+            content = <h1> OH NO ! It's bugged ! </h1>
+        }
+
         return(
             <main className="user__main">
-                <div className="user__header">
-                    <h1 className="user__title"> {pseudo} </h1>
-                    <div>
-                    <Button  style="button--user__header" label={"Edit Name"} />
-                    </div>
-                </div>
-                <Dashline />
-    
+                {content}
             </main>
         )
     }

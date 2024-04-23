@@ -10,16 +10,25 @@ export default function Header() {
 
     const dispatch = useDispatch()
     const token = useSelector(tokenUser)
-
+    let empty
+    const pseudo = useSelector((state) => state.user.user) 
+    
+    
     function handleClick(){
         dispatch(signOut())
     }
 
     const signOutButton = (
+        <>
+        <Link to="/user" className="main-nav__item">
+            <img src={figure} alt="icone de silhouette dans un cercle"></img>
+            <p> {token ? pseudo.firstName : empty} </p>
+        </Link>
         <Link to="/" className="main-nav__item"  onClick={handleClick}>
             <img src={arrow} alt="une flèche sortant d'un cube"></img>
             <p> Sign Out </p> 
-        </Link>)
+        </Link>
+        </>)
 
     const signInButton = (
         <Link to="/signin" className="main-nav__item">
