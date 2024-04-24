@@ -1,9 +1,10 @@
 import {PropTypes} from "prop-types"
 import "./index.css"
 
-export default function Button({label, style}) {
+export default function Button({label, style, click}) {
+  
     return(
-        <button className={`button ${style}`}> {label} </button>
+        <button className={`button ${style}`} onClick={click} > {label} </button>
     )
 }
 

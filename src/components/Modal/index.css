@@ -1,0 +1,32 @@
+dialog:modal {
+    position: relative;
+    width: 25%;
+    min-height: 50%;
+    top: 20%;
+    left: 35%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    background-color: white;
+    border: double 5px var(--secondary-color);
+    box-shadow: 0 0 5px 5px var(--main-color);
+    
+    margin: 0;
+
+    .modal__button {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    border: none;
+    color: white;
+    background-color: var(--secondary-color);
+    cursor: pointer;
+    font-weight: bold;
+    padding: 10px;
+    }
+    
+  }
+  dialog::backdrop {
+    background: hsl(0 0% 0% / 50%);
+  }

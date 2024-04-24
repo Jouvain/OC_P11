@@ -1,0 +1,36 @@
+.formChange{
+    background-color: white;
+    width: 100%;
+    margin: 3rem auto 0 auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .formChange__input{
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        margin-bottom: 1rem;
+        label {
+            font-weight: bold;
+        }
+    }
+    .formChange__label{
+        margin-left: 0.25rem;
+    }
+    .formChange__button{
+        width: 100%;
+        color: white;
+        background-color: var(--secondary-color);
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin-top: 1rem;
+        padding: 8px;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+}
+
+
+
+

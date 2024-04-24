@@ -1,17 +1,19 @@
 import { PropTypes } from "prop-types"
 import Button from "../../components/Button"
 import Dashline from "../../components/Dashline"
+import Modal from "../../components/Modal"
+import FormChange from "../../components/FormChange"
 import { tokenUser, fetchUser } from "../../features/users/usersSlice"
 import { Navigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import "./index.css"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 export default function UserPage() {
     
     const dispatch = useDispatch()
     const authentified = useSelector(tokenUser)
-    
+    const [modal, setModal] = useState(false)
     const pseudo = useSelector((state) => state.user.user)
     const status = useSelector((state) => state.user.status)
 
@@ -22,7 +24,10 @@ export default function UserPage() {
     }),[dispatch, status]
 
     let content
-    
+    function opening(){
+        setModal(true)
+    }
+   
 
     if (!authentified) {
         return <Navigate to="/signin" />
@@ -38,10 +43,15 @@ export default function UserPage() {
                     <div className="user__header">
                         <h1 className="user__title"> {personna} </h1>
                         <div>
-                        <Button  style="button--user__header" label={"Edit Name"} />
+                            <Modal openModal={modal} closeModal={()=>setModal(false)} children={<FormChange closeModal={()=>setModal(false)} />} >
+                                  
+                            </Modal>
+                            <Button  style="button--user__header" label={"Edit Name"} click={opening} />
+                            
                         </div>
                     </div>
                     <Dashline />
+
                 </>
             )
         }

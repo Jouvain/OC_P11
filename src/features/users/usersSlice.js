@@ -8,7 +8,6 @@ const initialState = {
 }
 
 export const loginUser = createAsyncThunk("user/loginUser", async (body, {rejectWithValue}) => {
-    
     try{
         const response = await fetch("http://localhost:3001/api/v1/user/login", {
             method: "POST",
@@ -21,7 +20,21 @@ export const loginUser = createAsyncThunk("user/loginUser", async (body, {reject
     catch(error) {
         return rejectWithValue("401")
     }
+})
 
+export const editUser = createAsyncThunk("user/editUser", async (bodytoken, thunkAPI) => {
+    let bodyString = JSON.stringify(bodytoken.body)
+    try{
+        const response = await fetch("http://localhost:3001/api/v1/user/profile", {
+            method: "PUT",
+            headers: {"Content-Type": "application/json", Authorization: `Bearer${bodytoken.token}`},
+            body: bodyString
+        })
+        const data = await response.json()
+        return data.body.userName
+    } catch (error) {
+        return error
+    }
 })
 
 export const fetchUser = createAsyncThunk("user/fetchUser", async(token, thunkAPI) => {
@@ -68,10 +81,18 @@ const usersSlice = createSlice({
             .addCase(fetchUser.fulfilled, (state, action) => {
                 state.user = action.payload
                 state.status = "success"
+                state.error = null
             })
             .addCase(fetchUser.rejected, (state, action) => {
                 state.error = action.payload
                 state.status = "failure"
+            })
+            .addCase(editUser.fulfilled, (state, action) => {
+                state.user.userName = action.payload
+                state.error = null
+            })
+            .addCase(editUser.rejected, (state, action) => {
+                state.error = action.payload
             })
     }
 })
