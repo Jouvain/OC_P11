@@ -1,9 +1,8 @@
 dialog:modal {
     position: relative;
-    width: 25%;
+
     min-height: 50%;
-    top: 20%;
-    left: 35%;
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -12,7 +11,7 @@ dialog:modal {
     border: double 5px var(--secondary-color);
     box-shadow: 0 0 5px 5px var(--main-color);
     
-    margin: 0;
+    
 
     .modal__button {
     position: absolute;
@@ -30,3 +29,7 @@ dialog:modal {
   dialog::backdrop {
     background: hsl(0 0% 0% / 50%);
   }
+
+@media (max-width: 900px) {
+   
+}

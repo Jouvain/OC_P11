@@ -19,7 +19,7 @@ export default function Header() {
     }
 
     const signOutButton = (
-        <>
+        <div className="main-nav__container">
         <Link to="/user" className="main-nav__item">
             <img src={figure} alt="icone de silhouette dans un cercle"></img>
             <p> {token ? pseudo.firstName : empty} </p>
@@ -28,7 +28,7 @@ export default function Header() {
             <img src={arrow} alt="une flèche sortant d'un cube"></img>
             <p> Sign Out </p> 
         </Link>
-        </>)
+        </div>)
 
     const signInButton = (
         <Link to="/signin" className="main-nav__item">

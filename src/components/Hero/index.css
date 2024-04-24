@@ -15,3 +15,21 @@
 .hero__text{
     font-size: 1.2rem;
 }
+
+@media (max-width: 900px) {
+    .hero{
+        position: relative;
+        width: 200px;
+        background: white;
+        padding: 2rem;
+        text-align: left;
+        margin: 0 auto;
+        right: unset;
+    }
+    .hero__title{
+        font-size: 1rem;
+    }
+    .hero__text{
+        font-size: 0.9rem;
+    }
+}

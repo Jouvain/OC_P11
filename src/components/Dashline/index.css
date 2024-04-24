@@ -36,3 +36,16 @@
     font-size: 1.1rem;
     font-weight: bold;
 }
+
+@media (max-width: 900px) {
+    .dash {
+        flex-direction: column;
+        align-items: unset;
+    }
+    .button--dash {
+        width: 100%;
+    }
+    .dash__text1 {
+        font-size: 2rem;
+    }
+}

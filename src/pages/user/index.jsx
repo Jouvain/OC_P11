@@ -51,6 +51,8 @@ export default function UserPage() {
                         </div>
                     </div>
                     <Dashline />
+                    <Dashline title="Fictious account" text1="$ 500, 189.72"/>
+                    <Dashline title="Dummy operations" text1="$ 17,000"/>
 
                 </>
             )
