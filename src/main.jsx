@@ -10,6 +10,9 @@ import { store } from './store.js'
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
 import {Provider} from "react-redux"
 import './index.css'
+import { useDispatch } from 'react-redux'
+import { rememberUser } from './features/users/usersSlice.js'
+
 
 
 

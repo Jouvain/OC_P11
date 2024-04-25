@@ -17,3 +17,8 @@
 .button--user__header{
     width: 100px;
 }
+@media (max-width: 900px) {
+    .user__title {
+        font-size: 1.5rem;
+    }
+}

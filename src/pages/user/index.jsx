@@ -4,24 +4,34 @@ import Dashline from "../../components/Dashline"
 import Modal from "../../components/Modal"
 import FormChange from "../../components/FormChange"
 import { tokenUser, fetchUser } from "../../features/users/usersSlice"
-import { Navigate } from "react-router-dom"
+import { Navigate, useLocation } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import "./index.css"
 import { useEffect, useState } from "react"
 
 export default function UserPage() {
-    
+    const location = useLocation()
     const dispatch = useDispatch()
     const authentified = useSelector(tokenUser)
     const [modal, setModal] = useState(false)
     const pseudo = useSelector((state) => state.user.user)
     const status = useSelector((state) => state.user.status)
+    const isChecked = location.state
+    
+  
+   
 
     useEffect(() => {
         if (status === "idle") {
             dispatch(fetchUser(authentified))
         }
     }),[dispatch, status]
+
+    if (isChecked) { 
+        const storedToken = localStorage.setItem("tokenKey", authentified)
+        const storedFirstName = localStorage.setItem("firstName", pseudo.firstName)
+        console.log("c'est stocké")
+   }
 
     let content
     function opening(){

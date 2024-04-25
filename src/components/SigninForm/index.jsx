@@ -1,8 +1,9 @@
 import icon from "../../assets/img/circle-user-solid.svg" 
 import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { loginUser, errorStatus} from "../../features/users/usersSlice"
+import { loginUser, errorStatus, rememberUser} from "../../features/users/usersSlice"
 import { useState } from "react"
+import Checkbox from "../Checkbox"
 
 import "./index.css"
 
@@ -13,20 +14,26 @@ export default function SigninForm(){
     const navigate = useNavigate()
     const [userMail, setUserMail] = useState("")
     const [userPassword, setUserPassword] = useState("")
+    const [isChecked, setIsChecked] = useState(false)
     const status = useSelector(errorStatus)
     const errorMessage = (
         <span> Something's wrong... mail or password invalid ! </span>
     )
 
+ 
+
     async function handleSubmit(event){
         event.preventDefault()
         const body = {email: userMail, password:userPassword}
+
+        
         try {
            await dispatch(loginUser(JSON.stringify(body))).unwrap()
         } catch (err) {
             console.error("Failed !", err)
         } finally {
-            navigate("/user")  
+            const check = isChecked ? true : false
+            navigate("/user", {state: check} )  
         }
     }
 
@@ -43,10 +50,8 @@ export default function SigninForm(){
                     <label htmlFor="password" > Password </label>
                     <input id="password" type="password" value={userPassword} onChange={ (event) => setUserPassword(event.target.value)} required/>
                 </div>
-                <div className="signinForm__remember">
-                    <input id="rememberme" type="checkbox" />
-                    <label htmlFor="rememberme" > Remember me </label>
-                </div>
+                
+                <Checkbox  label="Remember me"  isChecked={isChecked} onChange={()=> setIsChecked((prev) => !prev)}/>
 
                 
                 <button type="submit" className="signinForm__button"> Sign In </button>

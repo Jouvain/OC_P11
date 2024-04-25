@@ -5,6 +5,7 @@ const initialState = {
     error: null,
     status: "idle",
     user: {firstName:"", lastName:"", userName:"", id:""},
+    isChecked: false
 }
 
 export const loginUser = createAsyncThunk("user/loginUser", async (body, {rejectWithValue}) => {
@@ -61,7 +62,11 @@ const usersSlice = createSlice({
                 state.status = "idle"
                 state.user = {firstName:"", lastName:"", userName:"", id:""}
                 state.error = null
+                state.isChecked = false
             }
+        },
+        rememberUser(state, action) {
+            state.token = action.payload
         }
     },
     extraReducers(builder) {
@@ -69,19 +74,24 @@ const usersSlice = createSlice({
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.token = action.payload
                 state.error = null
+                state.status = "idle"
             })
             .addCase(loginUser.rejected, (state, action) => {
-                state.error = action.payload
-                
-                
+                state.error = action.payload 
             })
             .addCase(fetchUser.pending, (state,action) => {
                 state.status = "ongoing"
             })
             .addCase(fetchUser.fulfilled, (state, action) => {
-                state.user = action.payload
-                state.status = "success"
-                state.error = null
+                if (action.meta.arg === null) {
+                    state.status = "authentification failure"
+                    state.user = {firstName:"", lastName:"", userName:"", id:""}
+                } else {
+                    state.user = action.payload
+                    state.status = "success"
+                    state.error = null
+                }
+
             })
             .addCase(fetchUser.rejected, (state, action) => {
                 state.error = action.payload
@@ -101,4 +111,4 @@ export default usersSlice.reducer
 
 export const tokenUser = (state) => state.user.token
 export const errorStatus = (state) => state.user.error
-export const { signOut } = usersSlice.actions
+export const { signOut, rememberUser } = usersSlice.actions

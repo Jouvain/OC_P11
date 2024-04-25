@@ -7,22 +7,24 @@ import "./index.css"
 
 
 export default function Header() {
-
+    const storedFirstName = localStorage.getItem("firstName")
+    const storedToken = localStorage.getItem("tokenKey")
     const dispatch = useDispatch()
     const token = useSelector(tokenUser)
     let empty
     const pseudo = useSelector((state) => state.user.user) 
-    
+
     
     function handleClick(){
         dispatch(signOut())
+        localStorage.clear()
     }
 
     const signOutButton = (
         <div className="main-nav__container">
         <Link to="/user" className="main-nav__item">
             <img src={figure} alt="icone de silhouette dans un cercle"></img>
-            <p> {token ? pseudo.firstName : empty} </p>
+            <p> {storedToken===null ? pseudo.firstName : storedFirstName} </p>
         </Link>
         <Link to="/" className="main-nav__item"  onClick={handleClick}>
             <img src={arrow} alt="une flèche sortant d'un cube"></img>
