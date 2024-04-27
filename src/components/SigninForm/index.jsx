@@ -1,7 +1,7 @@
 import icon from "../../assets/img/circle-user-solid.svg" 
 import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { loginUser, errorStatus, rememberUser} from "../../features/users/usersSlice"
+import { loginUser, errorStatus, rememberUser, fetchUser} from "../../features/users/usersSlice"
 import { useState } from "react"
 import Checkbox from "../Checkbox"
 
@@ -16,25 +16,22 @@ export default function SigninForm(){
     const [userPassword, setUserPassword] = useState("")
     const [isChecked, setIsChecked] = useState(false)
     const status = useSelector(errorStatus)
-    const errorMessage = (
-        <span> Something's wrong... mail or password invalid ! </span>
-    )
 
+    const errorMessage = (<span> Something's wrong... mail or password invalid ! </span>)
  
-
     async function handleSubmit(event){
         event.preventDefault()
         const body = {email: userMail, password:userPassword}
-
-        
-        try {
-           await dispatch(loginUser(JSON.stringify(body))).unwrap()
-        } catch (err) {
-            console.error("Failed !", err)
-        } finally {
-            const check = isChecked ? true : false
-            navigate("/user", {state: check} )  
-        }
+        dispatch(loginUser(JSON.stringify(body))).unwrap()
+        .then((promesse)=>{
+            if (promesse) {
+                dispatch(fetchUser(promesse)).unwrap()
+                .then(()=> {
+                    const check = isChecked ? true : false
+                    navigate("/user", {state: check})  
+                })   
+            }
+        })
     }
 
     return(
@@ -50,12 +47,8 @@ export default function SigninForm(){
                     <label htmlFor="password" > Password </label>
                     <input id="password" type="password" value={userPassword} onChange={ (event) => setUserPassword(event.target.value)} required/>
                 </div>
-                
                 <Checkbox  label="Remember me"  isChecked={isChecked} onChange={()=> setIsChecked((prev) => !prev)}/>
-
-                
                 <button type="submit" className="signinForm__button"> Sign In </button>
-                
                 {status && errorMessage}
             </form>
         </section>

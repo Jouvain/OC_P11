@@ -23,12 +23,12 @@ export const loginUser = createAsyncThunk("user/loginUser", async (body, {reject
     }
 })
 
-export const editUser = createAsyncThunk("user/editUser", async (bodytoken, thunkAPI) => {
-    let bodyString = JSON.stringify(bodytoken.body)
+export const editUser = createAsyncThunk("user/editUser", async (bodyToken, thunkAPI) => {
+    let bodyString = JSON.stringify(bodyToken.body)
     try{
         const response = await fetch("http://localhost:3001/api/v1/user/profile", {
             method: "PUT",
-            headers: {"Content-Type": "application/json", Authorization: `Bearer${bodytoken.token}`},
+            headers: {"Content-Type": "application/json", Authorization: `Bearer${bodyToken.token}`},
             body: bodyString
         })
         const data = await response.json()
@@ -39,6 +39,7 @@ export const editUser = createAsyncThunk("user/editUser", async (bodytoken, thun
 })
 
 export const fetchUser = createAsyncThunk("user/fetchUser", async(token, thunkAPI) => {
+    // utilise le token en paramètre pour autoriser la récupération d'un profil et renvoie le profil OU l'erreur
     try {
         const response = await fetch("http://localhost:3001/api/v1/user/profile", {
             method: "POST",
@@ -66,7 +67,15 @@ const usersSlice = createSlice({
             }
         },
         rememberUser(state, action) {
+            // fait de la variable en paramètre le nouveau "user.token"
             state.token = action.payload
+        },
+        clearStateErrors(state, action) {
+            state.error = null
+            state.status = "idle"
+        },
+        setStateError(state, action) {
+            state.error = "OUPSIE"
         }
     },
     extraReducers(builder) {
@@ -74,17 +83,18 @@ const usersSlice = createSlice({
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.token = action.payload
                 state.error = null
-                state.status = "idle"
+                state.status = "success"
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.error = action.payload 
+                state.status = "failed"
             })
             .addCase(fetchUser.pending, (state,action) => {
                 state.status = "ongoing"
             })
             .addCase(fetchUser.fulfilled, (state, action) => {
                 if (action.meta.arg === null) {
-                    state.status = "authentification failure"
+                    state.status = "failure"
                     state.user = {firstName:"", lastName:"", userName:"", id:""}
                 } else {
                     state.user = action.payload
@@ -98,11 +108,18 @@ const usersSlice = createSlice({
                 state.status = "failure"
             })
             .addCase(editUser.fulfilled, (state, action) => {
-                state.user.userName = action.payload
-                state.error = null
+                if (action.meta.arg === null) {
+                    state.status = "failure"
+                } else {
+                    state.user.userName = action.payload
+                    state.error = null
+                    state.status = "idle"
+                }
+
             })
             .addCase(editUser.rejected, (state, action) => {
                 state.error = action.payload
+                state.status = "failure"
             })
     }
 })
@@ -111,4 +128,4 @@ export default usersSlice.reducer
 
 export const tokenUser = (state) => state.user.token
 export const errorStatus = (state) => state.user.error
-export const { signOut, rememberUser } = usersSlice.actions
+export const { signOut, rememberUser, clearStateErrors, setStateError } = usersSlice.actions

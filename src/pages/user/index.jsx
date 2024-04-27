@@ -3,73 +3,65 @@ import Button from "../../components/Button"
 import Dashline from "../../components/Dashline"
 import Modal from "../../components/Modal"
 import FormChange from "../../components/FormChange"
-import { tokenUser, fetchUser } from "../../features/users/usersSlice"
+import { tokenUser} from "../../features/users/usersSlice"
 import { Navigate, useLocation } from "react-router-dom"
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector} from "react-redux"
 import "./index.css"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 export default function UserPage() {
     const location = useLocation()
-    const dispatch = useDispatch()
     const authentified = useSelector(tokenUser)
     const [modal, setModal] = useState(false)
     const pseudo = useSelector((state) => state.user.user)
-    const status = useSelector((state) => state.user.status)
     const isChecked = location.state
-    
-  
-   
-
-    useEffect(() => {
-        if (status === "idle") {
-            dispatch(fetchUser(authentified))
-        }
-    }),[dispatch, status]
-
-    if (isChecked) { 
-        const storedToken = localStorage.setItem("tokenKey", authentified)
-        const storedFirstName = localStorage.setItem("firstName", pseudo.firstName)
-        console.log("c'est stocké")
-   }
-
     let content
+
+    function createCookie(name, value, expire) {
+    // créé un cookie attaché à la racine du domaine pour "expire" jours
+        const date = new Date()
+        date.setTime(date.getTime() + (expire*24*60*60*1000))
+        let expireString = "expires="+date.toUTCString()
+        document.cookie = name + "=" + value + ";" + expireString + ";path=/"
+    }
+
+    // SI le composant "SigninForm" avait la case "rememberme" cochée ALORS prénom et token sont stockés en Local
+    if (isChecked) { 
+        //localStorage.setItem("tokenKey", authentified)
+        //localStorage.setItem("firstName", pseudo.firstName)
+        //document.cookie = `token=${authentified}`
+        //document.cookie = `firstName=${pseudo.firstName}`
+        createCookie("firstname",pseudo.firstName,1)
+        createCookie("token",authentified,1)
+        
+    }
+
     function opening(){
         setModal(true)
     }
-   
-
+    // ******** contenu protégé ***********
+    // SI échec de l'authentification ALORS redirection
     if (!authentified) {
         return <Navigate to="/signin" />
-    }
+    } // SINON affichage du profil
     else {
-        if (status === "ongoing") {
-            content = <h1> LOADING... </h1>
-        }
-        else if (status === "success") {
-            let personna = pseudo.firstName + " " + `"${pseudo.userName}"` + " " + pseudo.lastName
-            content = (
-                <>
-                    <div className="user__header">
-                        <h1 className="user__title"> {personna} </h1>
-                        <div>
-                            <Modal openModal={modal} closeModal={()=>setModal(false)} children={<FormChange closeModal={()=>setModal(false)} />} >
-                                  
-                            </Modal>
-                            <Button  style="button--user__header" label={"Edit Name"} click={opening} />
-                            
-                        </div>
+        let personna = pseudo.firstName + " " + `"${pseudo.userName}"` + " " + pseudo.lastName
+        content = (
+            <>
+                <div className="user__header">
+                    <h1 className="user__title"> {personna} </h1>
+                    <div>
+                        <Modal openModal={modal} closeModal={()=>setModal(false)}  >
+                            <FormChange closeModal={()=>setModal(false)} />
+                        </Modal>
+                        <Button  style="button--user__header" label={"Edit Name"} click={opening} /> 
                     </div>
-                    <Dashline />
-                    <Dashline title="Fictious account" text1="$ 500, 189.72"/>
-                    <Dashline title="Dummy operations" text1="$ 17,000"/>
-
-                </>
-            )
-        }
-        else if (status === "failure") {
-            content = <h1> OH NO ! It's bugged ! </h1>
-        }
+                </div>
+                <Dashline />
+                <Dashline title="Fictious account" text1="$ 500, 189.72"/>
+                <Dashline title="Dummy operations" text1="$ 17,000"/>
+            </>
+        )
 
         return(
             <main className="user__main">

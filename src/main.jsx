@@ -13,9 +13,6 @@ import './index.css'
 import { useDispatch } from 'react-redux'
 import { rememberUser } from './features/users/usersSlice.js'
 
-
-
-
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>
