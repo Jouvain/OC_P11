@@ -1,27 +1,30 @@
 import {Link, useNavigate} from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
-import { signOut, tokenUser } from "../../features/users/usersSlice"
+import { signOut, tokenUser, loadCookies } from "../../features/users/usersSlice"
 import figure from "../../assets/img/circle-user-solid.svg"
 import arrow from "../../assets/img/right-from-bracket-solid.svg"
 import "./index.css"
-import { useState } from "react"
+
 
 export default function Header() {
-    const storedFirstName = localStorage.getItem("firstName")
-    const storedToken = localStorage.getItem("tokenKey")
+
     const dispatch = useDispatch()
     const token = useSelector(tokenUser)
     const pseudo = useSelector((state) => state.user.user) 
     const navigate = useNavigate()
-    //const [isLogged, setIsLogged] = useState(false)
+    
+    if (document.cookie && token === null) {
+        let storedToken = getCookie("token")
+        let storedFirstName = getCookie("firstname")
+        let storedUserName = getCookie("username")
+        let storedLastName = getCookie("lastname")
+        const payload = {token: storedToken, firstname: storedFirstName, username: storedUserName, lastname: storedLastName}
+        dispatch(loadCookies(payload))
+    }
 
     const cookieName = findCookie("firstname")
     const cookieToken = getCookie("token")
-    /*
-    if (cookieToken || token) {
-        setIsLogged(true)
-    }
-    */
+    console.log(cookieToken)
     
     function findCookie(name) {
         let allCookies = document.cookie
@@ -32,13 +35,12 @@ export default function Header() {
             ?.split("=")[1]
             return value
         } else {
-            return null
+            return ""
         }
 
     }
 
-    function deleteCookie(name){
-        //document.cookie = `${name}= ; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`
+    function deleteCookie(){
         document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
     }
 
@@ -51,20 +53,18 @@ export default function Header() {
       )
 
     function handleClick(){
+        navigate("/")
+        deleteCookie()
         dispatch(signOut())
+        .then(()=>{
+            if (cookieToken) {
+                deleteCookie()
+            }
+            
+        })
         
-        if (cookieToken) {
-            deleteCookie("firstname")
-            deleteCookie("token")
-            console.log("on efface !")
-            navigate("/")
-        }
-        setIsLogged(false)
     }
 
-    console.log(cookieToken)
-    console.log(cookieName)
-    console.log(document.cookie)
     
 
     // ********* les différents contenus conditionnels *************
@@ -73,7 +73,7 @@ export default function Header() {
         <div className="main-nav__container">
         <Link to="/user" className="main-nav__item">
             <img src={figure} alt="icone de silhouette dans un cercle"></img>
-            <p> {cookieToken===null || cookieToken === "" ? pseudo.firstName : cookieName} </p>
+            <p> {pseudo.firstName} </p>
         </Link>
         <Link to="/" className="main-nav__item"  onClick={handleClick}>
             <img src={arrow} alt="une flèche sortant d'un cube"></img>
@@ -94,7 +94,7 @@ export default function Header() {
             <Link to="/">
                 <img src="./src/assets/img/argentBankLogo.png" alt="Logo vert et marron d'ArgentBank" className="main-nav__logo"></img>
             </Link>
-           { token || cookieToken ? (signOutButton) : (signInButton)  }   
+           { token ? (signOutButton) : (signInButton)  }   
         </nav>
     )
 }

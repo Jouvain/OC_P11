@@ -33,6 +33,8 @@ export default function UserPage() {
         //document.cookie = `firstName=${pseudo.firstName}`
         createCookie("firstname",pseudo.firstName,1)
         createCookie("token",authentified,1)
+        createCookie("username", pseudo.userName, 1)
+        createCookie("lastname", pseudo.lastName, 1)
         
     }
 

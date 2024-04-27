@@ -76,6 +76,17 @@ const usersSlice = createSlice({
         },
         setStateError(state, action) {
             state.error = "OUPSIE"
+        },
+        loadCookies(state, action) {
+            if (action.payload.token === "null") {
+                state.token = null
+            } else {
+                state.token = action.payload.token
+                state.user.firstName = action.payload.firstname
+                state.user.userName = action.payload.username
+                state.user.lastName = action.payload.lastname
+            }
+            
         }
     },
     extraReducers(builder) {
@@ -128,4 +139,4 @@ export default usersSlice.reducer
 
 export const tokenUser = (state) => state.user.token
 export const errorStatus = (state) => state.user.error
-export const { signOut, rememberUser, clearStateErrors, setStateError } = usersSlice.actions
+export const { signOut, rememberUser, clearStateErrors, setStateError, loadCookies } = usersSlice.actions
