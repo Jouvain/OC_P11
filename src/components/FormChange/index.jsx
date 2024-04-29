@@ -15,7 +15,6 @@ export default function FormChange({closeModal}) {
     async function handleSubmit(event) {
         event.preventDefault()
         const bodyToken = {body: {"userName": pseudo}, token: authentified}
-        
         dispatch(editUser(bodyToken)).unwrap()
         .then((promesse)=> {
            if(promesse){
@@ -26,10 +25,7 @@ export default function FormChange({closeModal}) {
            }
         })
     }
-        
-        
     
-
     return(
         <form className="formChange"  onSubmit={handleSubmit}>
             <label  htmlFor="newPseudo" className="formChange__label"> New username : </label>

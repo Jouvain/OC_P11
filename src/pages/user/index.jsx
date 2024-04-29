@@ -25,17 +25,12 @@ export default function UserPage() {
         document.cookie = name + "=" + value + ";" + expireString + ";path=/"
     }
 
-    // SI le composant "SigninForm" avait la case "rememberme" cochée ALORS prénom et token sont stockés en Local
+    // SI le composant "SigninForm" avait la case "rememberme" cochée ALORS infos-utilisateurs => Cookie
     if (isChecked) { 
-        //localStorage.setItem("tokenKey", authentified)
-        //localStorage.setItem("firstName", pseudo.firstName)
-        //document.cookie = `token=${authentified}`
-        //document.cookie = `firstName=${pseudo.firstName}`
         createCookie("firstname",pseudo.firstName,1)
         createCookie("token",authentified,1)
         createCookie("username", pseudo.userName, 1)
         createCookie("lastname", pseudo.lastName, 1)
-        
     }
 
     function opening(){
