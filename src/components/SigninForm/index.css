@@ -46,3 +46,7 @@
     text-decoration: underline;
     cursor: pointer;
 }
+.signinForm__error{
+    color: var(--main-color);
+    font-weight: bold;
+}

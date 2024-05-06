@@ -29,11 +29,6 @@ export default function Header() {
         navigate("/")
         deleteCookie()
         dispatch(signOut())
-        .then(()=>{
-            if (document.cookie) {
-                deleteCookie()
-            } 
-        })  
     }
 
     // ********* les différents contenus conditionnels *************

@@ -9,15 +9,15 @@ export default function FormChange({closeModal}) {
     const dispatch = useDispatch()
     const status = useSelector(errorStatus)
     const errorMessage = (
-        <span> Something's went wrong... </span>
+        <span className="formChange__error"> Something's went wrong... </span>
     )
 
     async function handleSubmit(event) {
         event.preventDefault()
         const bodyToken = {body: {"userName": pseudo}, token: authentified}
         dispatch(editUser(bodyToken)).unwrap()
-        .then((promesse)=> {
-           if(promesse){
+        .then((username)=> {
+           if(username){
             closeModal()
            } else {
             console.error("Edit failed !")

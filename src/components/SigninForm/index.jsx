@@ -17,15 +17,15 @@ export default function SigninForm(){
     const [isChecked, setIsChecked] = useState(false)
     const status = useSelector(errorStatus)
 
-    const errorMessage = (<span> Something's wrong... mail or password invalid ! </span>)
+    const errorMessage = (<span className="signinForm__error"> Something's wrong... mail or password invalid ! </span>)
  
     async function handleSubmit(event){
         event.preventDefault()
         const body = {email: userMail, password:userPassword}
         dispatch(loginUser(JSON.stringify(body))).unwrap()
-        .then((promesse)=>{
-            if (promesse) {
-                dispatch(fetchUser(promesse)).unwrap()
+        .then((token)=>{
+            if (token) {
+                dispatch(fetchUser(token)).unwrap()
                 .then(()=> {
                     const check = isChecked ? true : false
                     navigate("/user", {state: check})  

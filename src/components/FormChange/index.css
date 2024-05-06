@@ -29,6 +29,10 @@
         text-decoration: underline;
         cursor: pointer;
     }
+    .formChange__error{
+        color: var(--main-color);
+        font-weight: bold;
+    }
 }
 
 
