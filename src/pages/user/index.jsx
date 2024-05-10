@@ -24,6 +24,7 @@ export default function UserPage() {
         let expireString = "expires="+date.toUTCString()
         document.cookie = name + "=" + value + ";" + expireString + ";path=/"
     }
+    
 
     // SI le composant "SigninForm" avait la case "rememberme" cochée ALORS infos-utilisateurs => Cookie
     if (isChecked) { 

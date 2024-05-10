@@ -37,7 +37,7 @@ export default function Header() {
         <div className="main-nav__container">
         <Link to="/user" className="main-nav__item">
             <img src={figure} alt="icone de silhouette dans un cercle"></img>
-            <p> {pseudo.firstName} </p>
+            <p> {pseudo.userName} </p>
         </Link>
         <Link to="/" className="main-nav__item"  onClick={handleClick}>
             <img src={arrow} alt="une flèche sortant d'un cube"></img>
